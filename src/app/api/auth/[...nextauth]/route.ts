@@ -70,7 +70,7 @@ export const authOptions = {
 };
 
 import { NextRequest } from "next/server";
-
+// @ts-ignore
 // ✅ App Router route handler
 const handler = NextAuth(authOptions);
 

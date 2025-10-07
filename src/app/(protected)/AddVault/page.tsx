@@ -42,8 +42,9 @@ const AddVault: React.FC = () => {
   const [excludeSimilar, setExcludeSimilar] = useState(true);
 
   useEffect(() => {
-    if (session?.user?.id) {
-      setFormData((prev) => ({ ...prev, ownerid: session?.user?.id }));
+    const user = session?.user as { id?: string } | undefined;
+    if (user && user.id) {
+      setFormData((prev) => ({ ...prev, ownerid: user.id ?? "" }));
     }
   }, [session]);
 
@@ -93,18 +94,19 @@ const AddVault: React.FC = () => {
 
       const res = await axios.post("/api/vault", { data: encryptedData });
       if (res.data.success) {
-        router.push("/Dashboard");
+        const user = session?.user as { id?: string } | undefined;
+        router.push("/Dashboard")
         setFormData({
           title: "",
           username: "",
           password: "",
           url: "",
           notes: "",
-          ownerid: session?.user?.id || "",
+          ownerid: user && user.id ? user.id : "",
         });
         toast.success("Vault saved successfully ✅");
       }
-    } catch {
+    } catch (err) {
       toast.error("Something went wrong ❌");
     }
   };

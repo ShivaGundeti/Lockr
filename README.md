@@ -1,36 +1,106 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+Lockr
 
-## Getting Started
+Lockr is a secure and modern password and vault manager built with Next.js. It allows users to safely store credentials, notes, and URLs in encrypted form. All sensitive data is encrypted on the frontend before sending to the backend, and stored securely in MongoDB. The application also includes role-based access, authentication, and a dashboard to manage vault items efficiently.
 
-First, run the development server:
+Features
 
-```bash
+Secure user registration and login with encrypted credentials.
+
+Passwords and sensitive vault data encrypted before storage.
+
+Role-based access (User/Admin, if extended).
+
+Vault management: Add, Edit, Delete, View credentials and notes.
+
+Toggleable password visibility and copy to clipboard functionality.
+
+Dark and light theme support.
+
+Responsive and modern UI.
+
+Tech Stack
+
+Frontend: Next.js (App Router), React, Tailwind CSS
+
+Backend: Next.js API Routes, Node.js
+
+Database: MongoDB (via Mongoose)
+
+Authentication: NextAuth.js or custom JWT-based auth
+
+Encryption: CryptoJS (AES)
+
+Notifications: react-hot-toast
+
+Icons: Lucide-react
+
+Installation
+
+Clone the repository
+
+git clone https://github.com/YOUR_USERNAME/REPO_NAME.git
+cd REPO_NAME
+
+
+Install dependencies
+
+npm install
+
+
+Configure Environment Variables
+
+Create a .env.local file at the root of the project:
+
+MONGODB_URI=<your_mongodb_connection_string>
+NEXT_PUBLIC_CRYPTO_SECRET_KEY=<your_frontend_encryption_key>
+CRYPTO_SECRET_KEY=<your_backend_encryption_key>
+NEXTAUTH_URL=http://localhost:3000
+
+
+Ensure that the frontend and backend use the same encryption key.
+
+Run the development server
+
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Open http://localhost:3000
+ to view your app in the browser.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Folder Structure (Simplified)
 
-## Learn More
+/app - Next.js app directory
 
-To learn more about Next.js, take a look at the following resources:
+/app/api - API routes for user and vault operations
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+/app/Context - Theme and global state context
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+/lib - Database connection and Mongoose models
 
-## Deploy on Vercel
+/components - UI components
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+/public - Static assets
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Usage
+
+Register a new account.
+
+Log in securely.
+
+Add vault items (credentials, URL, notes).
+
+Edit or delete vault items as needed.
+
+Search and filter vault items.
+
+Toggle dark/light theme.
+
+All data is encrypted before being stored in the database.
+
+Encryption
+
+Frontend: All user credentials and vault data are encrypted using AES via CryptoJS before sending to backend.
+
+Backend: Data is received as encrypted strings and stored directly in MongoDB.
+
+Passwords: User account passwords are additionally hashed with bcrypt.

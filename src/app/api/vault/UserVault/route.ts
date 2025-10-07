@@ -23,7 +23,7 @@ export async function GET(req: Request) {
     }
 
    
-    let decryptedVault = { ...vault._doc };
+    let decryptedVault = { ...vault.toObject() };
     if (vault.password) {
       try {
         const bytes = CryptoJS.AES.decrypt(vault.password, SECRET_KEY);

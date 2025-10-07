@@ -11,7 +11,7 @@ export async function POST(req: Request) {
     if (!data) {
       return NextResponse.json({ Message: "No data received" }, { status: 400 });
     }
-
+    await ConnectDB()
     
 
     const bytes = CryptoJS.AES.decrypt(data, process.env.CRYPTO_SECRET_KEY!);

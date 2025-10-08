@@ -41,7 +41,7 @@ const Login: React.FC = () => {
  
 
       if (res?.error)  toast.error("Invalid email or password ❌");
-      else router.push("/Dashboard");
+      else router.push("/dashboard");
     } catch (error) {
       toast.error("Server error. Please try again ❌");
  

@@ -15,7 +15,9 @@ declare module "next-auth" {
   }
 }
 
-export const authOptions = {
+
+
+const handler = NextAuth({
   providers: [
     CredentialsProvider({
       name: "credentials",
@@ -24,7 +26,7 @@ export const authOptions = {
       },
       async authorize(credentials) {
         try {
-          await ConnectDB();
+        await ConnectDB();
 
           const bytes = CryptoJS.AES.decrypt(
             credentials!.encryptedData,
@@ -32,6 +34,7 @@ export const authOptions = {
           );
           const decrypted = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
           const input = decrypted;
+          console.log(input)
 
           if (!input?.email || !input?.password)
             throw new Error("Missing email or password");
@@ -42,11 +45,11 @@ export const authOptions = {
           const isValid = await bcrypt.compare(input.password, user.password);
           if (!isValid) throw new Error("Invalid password");
 
-          return {
-            id: user._id.toString(),
-            name: user.name,
-            email: user.email,
-          };
+        return {
+          id: user._id.toString(),
+          name: user.name,
+          email: user.email,
+        };
         } catch (error) {
           console.error("Authorize error:", error);
           return null;
@@ -54,24 +57,26 @@ export const authOptions = {
       },
     }),
   ],
-  pages: { signIn: "/auth/login" },
-  session: { strategy: "jwt" as const },
+pages: { signIn: "/auth/login" },
+  session: {
+    strategy: "jwt",
+  },
   callbacks: {
-    async jwt({ token, user }: { token: any; user?: { id?: string } }) {
-      if (user) token.id = user.id;
+    async jwt({ token, user }) {
+      if (user) {
+        token.id = user.id;
+      }
       return token;
     },
-    async session({ session, token }: { session: Session; token: any }) {
-      if (session.user) session.user.id = (token as any).id;
+    async session({ session, token }) {
+      if (token && session.user) {
+        session.user.id = (token as any).id!;
+      }
       return session;
     },
   },
   secret: process.env.NEXTAUTH_SECRET,
-};
+});
 
-import { NextRequest } from "next/server";
-// @ts-ignore
-// ✅ App Router route handler
-const handler = NextAuth(authOptions);
 
 export { handler as GET, handler as POST };
